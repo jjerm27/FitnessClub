@@ -22,12 +22,8 @@
             @Html.DisplayNameFor(model => model.Training_Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TimeStart)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TimeStop)
-        </th>
-        <th></th>
+            @Html.DisplayNameFor(model => model.TimeOfTraining)
+        </th>               
     </tr>
 
 @foreach (var item in Model) {
@@ -42,11 +38,8 @@
             @Html.DisplayFor(modelItem => item.Training_Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TimeStart)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeStop)
-        </td>
+            @Html.DisplayFor(modelItem => item.TimeOfTraining)
+        </td>       
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.IdTraining }) |
             @Html.ActionLink("Details", "Details", new { id=item.IdTraining }) |
