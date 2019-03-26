@@ -27,11 +27,16 @@ namespace Fitness_Club2.Models
         [Display(Name = "Зал")]
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
-
         [Required]
-        [Display(Name = "Время тренировки")]
-        public string TimeOfTraining { get; set; }
-                 
+        [Display(Name = "Время начала")]
+        [DataType(DataType.DateTime)]
+
+        public DateTime? TimeStart { get; set; }
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Время окончания")]
+        public DateTime? TimeStop { get; set; }
+              
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TrainingUsers> TrainingUsers { get; set; }
     }

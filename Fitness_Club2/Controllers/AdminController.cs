@@ -61,7 +61,7 @@ namespace Fitness_Club2.Controllers
                                       Sex = p.Sex,
                                       Specialize = p.Specialize,
                                       Status = p.Status,
-                                      WorkingTimeName = db.WorkingTimes.Find(p.WorkingTimeId).NameOfChema,
+                                      WorkingTimeId = p.WorkingTimeId,
                                       PhoneNumber = p.PhoneNumber,
                                       PhoneNumberConfirmed = p.PhoneNumberConfirmed,
                                       Adress = p.Adress,
@@ -76,8 +76,8 @@ namespace Fitness_Club2.Controllers
 
                                       Role = string.Join(" , ", p.RoleNames)
                                   });
+           
 
-         
             return View(usersWithRoles.ToList());
         }
 
@@ -102,9 +102,9 @@ namespace Fitness_Club2.Controllers
             {                          
                 var RoleNames = userManager.GetRoles(id);
 
-                ViewBag.Roles = string.Join(" , ",RoleNames);               
+                ViewBag.Roles = string.Join(" , ",RoleNames);
 
-                string work = db.WorkingTimes.Where(w => w.WorkingTimeId == applicationUser.WorkingTimeId).FirstOrDefault().From.ToShortTimeString() + " : "+ db.WorkingTimes.Where(w => w.WorkingTimeId == applicationUser.WorkingTimeId).FirstOrDefault().To.ToShortTimeString();
+                string work = db.WorkingTimes.Where(w => w.WorkingTimeId == applicationUser.WorkingTimeId).Select(n => n.From).ToString() + db.WorkingTimes.Where(w => w.WorkingTimeId == applicationUser.WorkingTimeId).Select(n => n.To).ToString();
 
                 ViewBag.WorkTimes = work;
             }
@@ -117,7 +117,6 @@ namespace Fitness_Club2.Controllers
         {
             roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
             ViewBag.Roles = new SelectList(roleManager.Roles, "Id", "Name");
-            ViewBag.WorkShema = new SelectList(db.WorkingTimes, "WorkingTimeId", "NameOfChema");
             return View();
         }
 
@@ -126,7 +125,7 @@ namespace Fitness_Club2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Sex,Specialize,Status,WorkingTimeId,Filial_Id,IsActive,BirthDay,Adress,Photo,Date_Of_Create,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser, string Role)
+        public ActionResult Create([Bind(Include = "Id,Name,Sex,Specialize,Status,Working_hours,Filial_Id,IsActive,BirthDay,Adress,Photo,Date_Of_Create,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser, string Role)
         {
             userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
             roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
@@ -138,14 +137,11 @@ namespace Fitness_Club2.Controllers
                 db.SaveChanges();
                 userManager.AddToRole(applicationUser.Id, addRole.Name);
                 userManager.AddToRole(applicationUser.Id, "dont_change");
-                userManager.AddToRole(applicationUser.Id, "user");
                 return RedirectToAction("Index");
             }
 
             
             ViewBag.Roles = new SelectList(roleManager.Roles, "Id", "Name");
-            ViewBag.WorkShema = new SelectList(db.WorkingTimes, "WorkingTimeId", "NameOfChema");
-
 
             return View(applicationUser);
         }
@@ -154,9 +150,6 @@ namespace Fitness_Club2.Controllers
         public ActionResult Edit(string id)
         {
             userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
-            roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-            var dont_change = roleManager.FindByName("dont_change");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -172,20 +165,13 @@ namespace Fitness_Club2.Controllers
                                  join role in db.Roles on userRole.RoleId
                                  equals role.Id
                                  select role).ToList();
-
-                var RoleNamesStr = userManager.GetRoles(id);
-
-                ViewBag.RolesNow = new SelectList(RoleNames, "Id", "Name", dont_change.Id);             
-
-                ViewBag.Roles = string.Join(" , ", RoleNamesStr);
+             
+                ViewBag.RolesNow = new SelectList(RoleNames, "Id", "Name");
             }
 
+            roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
 
-           
-            ViewBag.AllRoles = new SelectList(roleManager.Roles, "Id", "Name", dont_change.Id);
-
-            ViewBag.WorkShema = new SelectList(db.WorkingTimes, "WorkingTimeId", "NameOfChema");
-
+            ViewBag.AllRoles = new SelectList(roleManager.Roles, "Id", "Name");
             return View(applicationUser);
         }
 
@@ -194,7 +180,7 @@ namespace Fitness_Club2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Sex,Specialize,Status,WorkingTimeId,Filial_Id,IsActive,BirthDay,Adress,Photo,Date_Of_Create,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser, string AddRole, string DelRole, string WorkSchema)
+        public ActionResult Edit([Bind(Include = "Id,Name,Sex,Specialize,Status,Working_hours,Filial_Id,IsActive,BirthDay,Adress,Photo,Date_Of_Create,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser, string AddRole, string DelRole)
         {
             userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
             roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
@@ -216,13 +202,10 @@ namespace Fitness_Club2.Controllers
             var RoleNames = (from userRole in applicationUser.Roles
                              join role in db.Roles on userRole.RoleId
                              equals role.Id
-                             select role);
-            ViewBag.RolesNow = new SelectList(RoleNames.ToList(), "Id", "Name", dont_change.Id);
- 
-            ViewBag.AllRoles = new SelectList(roleManager.Roles, "Id", "Name", dont_change.Id);
-
-            ViewBag.WorkShema = new SelectList(db.WorkingTimes, "WorkingTimeId", "NameOfChema");
-
+                             select role).ToList();
+            ViewBag.RolesNow = new SelectList(RoleNames, "Id", "Name");
+            roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            ViewBag.AllRoles = new SelectList(roleManager.Roles, "Id", "Name");
             return View(applicationUser);
         }
 
@@ -248,7 +231,6 @@ namespace Fitness_Club2.Controllers
 
             roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
             ViewBag.Roles = roleManager.Roles.ToList();
-
             return View(applicationUser);
         }
 

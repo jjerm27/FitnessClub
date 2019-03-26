@@ -50,9 +50,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.WorkingTimeId, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.Working_hours, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownList("WorkingTimeId", ViewBag.WorkShema as SelectList)
+            @Html.EditorFor(model => model.Working_hours, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Working_hours, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -203,7 +204,7 @@
     <div class="form-group">
         @Html.Label("Назначенные роли", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <p>@ViewBag.Roles</p>
+            <p>@ViewBag.RolesNow</p>
         </div>
     </div>
 

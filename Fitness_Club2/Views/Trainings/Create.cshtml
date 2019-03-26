@@ -39,14 +39,6 @@
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.TimeOfTraining, "TimeOfTraining", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("TimeOfTraining", ViewBag.TimeOfTraining as SelectList, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
     @*<div class="form-group">
             @Html.LabelFor(model => model.TimeStart, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -55,13 +47,13 @@
             </div>
         </div>*@
 
-    @*<div class="form-group">
-            @Html.LabelFor(model => model.TimeStart, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("TimeStart", ViewBag.TimeList as SelectList);
-                @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.TimeStart, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("TimeStart", ViewBag.TimeList as SelectList);
+            @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
     @*<div class="form-group">
             @Html.LabelFor(model => model.TimeStop, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -71,10 +63,10 @@
             </div>
         </div>*@
 
-    @*<div class="form-group">
-            @Html.LabelFor(model => model.TimeStop, htmlAttributes: new { @class = "control-label col-md-2" })
-            <p>Тренировка длится 1 час</p>
-        </div>*@
+    <div class="form-group">
+        @Html.LabelFor(model => model.TimeStop, htmlAttributes: new { @class = "control-label col-md-2" })
+        <p>Тренировка длится 1 час</p>
+    </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

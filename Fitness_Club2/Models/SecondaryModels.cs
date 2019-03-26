@@ -24,8 +24,8 @@ namespace Fitness_Club2.Models
         public string Specialize { get; set; }
         [Display(Name = "Статус")]
         public string Status { get; set; }
-        [Display(Name = "Схема часов работы")]
-        public string WorkingTimeName { get; set; }
+        [Display(Name = "Часы работы")]
+        public int WorkingTimeId { get; set; }
         [Display(Name = "Роли")]
         public string Role { get; set; }
         public int Filial_Id { get; set; }

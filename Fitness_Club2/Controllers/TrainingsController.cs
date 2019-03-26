@@ -55,14 +55,11 @@ namespace Fitness_Club2.Controllers
         private List<string> GetTime()
         {
             List<string> time = new List<string>();
-            string t = "";
-            var workTrainer = db.WorkingTimes.Where(n => n.NameOfChema == "trainer").FirstOrDefault();
-            for (DateTime i = workTrainer.From; i < workTrainer.To; )
+            DateTime d = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 9, 00, 00);
+            for (DateTime i = d; i.Hour < 20 && i.Minute<30; i.AddHours(1))
             {
-                t = i.ToShortTimeString();
-                i = i.AddMinutes(workTrainer.WorkingPeriodMinutes);
-                time.Add(t + " - " + i.ToShortTimeString());
-                i = i.AddMinutes(workTrainer.RelaxPeriodMinutes);
+                time.Add(d.Hour.ToString() +" :"+ d.Minute.ToString());
+                d.AddMinutes(30);
             }
 
             return time;
@@ -74,7 +71,7 @@ namespace Fitness_Club2.Controllers
 
             ViewBag.RoomId = new SelectList(db.Room, "RoomId", "Name_Room");                       
             ViewBag.TrainerId = new SelectList(FindTrainers(), "Id", "Name");
-            ViewBag.TimeOfTraining = new SelectList(GetTime());
+            ViewBag.TimeList = new SelectList(GetTime(), "Id", "Name");
             return View();
         }
 
@@ -83,19 +80,20 @@ namespace Fitness_Club2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdTraining,Training_Name,TrainerId,RoomId,TimeOfTraining")] Training training)
+        public ActionResult Create([Bind(Include = "IdTraining,Training_Name,TrainerId,RoomId,TimeStart,TimeStop")] Training training)
         {
             if (ModelState.IsValid)
             {
+
+                training.TimeStop = training.TimeStart.Value.AddHours(1);
                 db.Training.Add(training);
-                //db.TrainingUsers.Add(new TrainingUsers { IdTraining = training.IdTraining, UserId = User.Identity.GetUserId() });
                 db.SaveChanges();
-                return RedirectToAction("Index","Номе");
+                return RedirectToAction("Index");
             }
 
             ViewBag.RoomId = new SelectList(db.Room, "RoomId", "Name_Room", training.RoomId);
-            ViewBag.TrainerId = new SelectList(FindTrainers(), "Id", "Name", training.TrainerId);
-            ViewBag.TimeOfTraining = new SelectList(GetTime());
+            ViewBag.TrainerId = new SelectList(FindTrainers(), "Id", "Name", training.TrainerId);          
+            ViewBag.TimeList = new SelectList(GetTime(), "Id", "Name");
             return View(training);
         }
 

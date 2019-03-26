@@ -201,10 +201,6 @@
     <Compile Include="Migrations\201903221945221_chamgeWorkReq.Designer.cs">
       <DependentUpon>201903221945221_chamgeWorkReq.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201903252030289_changeTraining.cs" />
-    <Compile Include="Migrations\201903252030289_changeTraining.Designer.cs">
-      <DependentUpon>201903252030289_changeTraining.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Filial.cs" />
@@ -317,9 +313,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903221945221_chamgeWorkReq.resx">
       <DependentUpon>201903221945221_chamgeWorkReq.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903252030289_changeTraining.resx">
-      <DependentUpon>201903252030289_changeTraining.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
