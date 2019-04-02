@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Fitness_Club2.Controllers
 {
+    [Authorize(Roles ="user")]
     public class TrainingsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -20,7 +21,8 @@ namespace Fitness_Club2.Controllers
         // GET: Trainings
         public ActionResult Index()
         {
-            var trainings = db.Training.Include(t => t.Room).Include(t => t.Trainer);
+            var trainings = db.Training.Include(t => t.Room).Include(t => t.Trainer);           
+
             return View(trainings.ToList());
         }
 
@@ -68,6 +70,20 @@ namespace Fitness_Club2.Controllers
             return time;
         }
 
+        private List<string> GetDate()
+        {
+            List<string> date = new List<string>();
+            DateTime day = DateTime.Now;
+            DateTime to = day.AddDays(5);
+            for (DateTime i = day; i < to;)
+            {               
+                date.Add(i.ToShortDateString());
+                i = i.AddDays(1);
+            }
+                
+            return date;
+        }
+
         // GET: Trainings/Create
         public ActionResult Create()
         {           
@@ -75,6 +91,7 @@ namespace Fitness_Club2.Controllers
             ViewBag.RoomId = new SelectList(db.Room, "RoomId", "Name_Room");                       
             ViewBag.TrainerId = new SelectList(FindTrainers(), "Id", "Name");
             ViewBag.TimeOfTraining = new SelectList(GetTime());
+            ViewBag.DateOfTraining = new SelectList(GetDate());
             return View();
         }
 
@@ -83,20 +100,42 @@ namespace Fitness_Club2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdTraining,Training_Name,TrainerId,RoomId,TimeOfTraining")] Training training)
+        public ActionResult Create([Bind(Include = "IdTraining,Training_Name,TrainerId,RoomId,TimeOfTraining, dateOfTraining")] Training training)
         {
+            TrainingUsers user = null;
+                        
             if (ModelState.IsValid)
             {
-                db.Training.Add(training);
-                //db.TrainingUsers.Add(new TrainingUsers { IdTraining = training.IdTraining, UserId = User.Identity.GetUserId() });
-                db.SaveChanges();
-                return RedirectToAction("Index","Номе");
+                var existTrain = db.Training.Where(t => t.TimeOfTraining == training.TimeOfTraining).FirstOrDefault();
+                string currantUId = User.Identity.GetUserId();
+                if (existTrain != null)
+                {
+                    user = db.TrainingUsers.Where(t => t.IdTraining == existTrain.IdTraining).Where(u => u.UserId == currantUId).FirstOrDefault();
+                    if (user != null)
+                        return RedirectToAction("AlreadyExist");                                      
+                    db.TrainingUsers.Add(new TrainingUsers { IdTraining = existTrain.IdTraining, UserId = User.Identity.GetUserId() });
+                    db.SaveChanges();
+                }
+                else
+                {
+                    db.Training.Add(training);                   
+                    db.TrainingUsers.Add(new TrainingUsers { IdTraining = training.IdTraining, UserId = User.Identity.GetUserId() });
+                    db.SaveChanges();
+                }
+                                  
+                return RedirectToAction("Index");
             }
 
             ViewBag.RoomId = new SelectList(db.Room, "RoomId", "Name_Room", training.RoomId);
             ViewBag.TrainerId = new SelectList(FindTrainers(), "Id", "Name", training.TrainerId);
             ViewBag.TimeOfTraining = new SelectList(GetTime());
+            ViewBag.DateOfTraining = new SelectList(GetDate());
             return View(training);
+        }
+
+        public ActionResult AlreadyExist()
+        {
+            return View();
         }
 
         // GET: Trainings/Edit/5
@@ -113,6 +152,8 @@ namespace Fitness_Club2.Controllers
             }
             ViewBag.RoomId = new SelectList(db.Room, "RoomId", "Name_Room", training.RoomId);
             ViewBag.TrainerId = new SelectList(FindTrainers(), "Id", "Name", training.TrainerId);
+            ViewBag.TimeOfTraining = new SelectList(GetTime());
+            ViewBag.DateOfTraining = new SelectList(GetDate());
             return View(training);
         }
 
@@ -121,16 +162,19 @@ namespace Fitness_Club2.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdTraining,Training_Name,TrainerId,RoomId,TimeStart,TimeStop")] Training training)
+        public ActionResult Edit([Bind(Include = "IdTraining,Training_Name,TrainerId,RoomId,TimeOfTraining,dateOfTraining")] Training training)
         {
+            
             if (ModelState.IsValid)
-            {
+            {               
                 db.Entry(training).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.RoomId = new SelectList(db.Room, "RoomId", "Name_Room", training.RoomId);
             ViewBag.TrainerId = new SelectList(FindTrainers(), "Id", "Name", training.TrainerId);
+            ViewBag.TimeOfTraining = new SelectList(GetTime());
+            ViewBag.DateOfTraining = new SelectList(GetDate());
             return View(training);
         }
 

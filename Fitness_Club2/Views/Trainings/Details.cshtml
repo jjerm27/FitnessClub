@@ -1,16 +1,23 @@
 ﻿@model Fitness_Club2.Models.Training
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Детально";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Детально</h2>
 
-<div>
-    <h4>Training</h4>
+<div>    
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.dateOfTraining)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dateOfTraining)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Room.Name_Room)
         </dt>
@@ -36,24 +43,15 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TimeStart)
+            @Html.DisplayNameFor(model => model.TimeOfTraining)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TimeStart)
+            @Html.DisplayFor(model => model.TimeOfTraining)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TimeStop)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TimeStop)
-        </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IdTraining }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Редактировать", "Edit", new { id = Model.IdTraining }) |
+    @Html.ActionLink("Назад к списку", "Index")
 </p>

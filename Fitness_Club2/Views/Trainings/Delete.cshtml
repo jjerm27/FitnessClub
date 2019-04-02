@@ -1,17 +1,24 @@
 ﻿@model Fitness_Club2.Models.Training
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Удалить тренировку";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Удалить</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Уверены, что хотите удалить?</h3>
 <div>
-    <h4>Training</h4>
+    <h4>Тренировка</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.dateOfTraining)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dateOfTraining)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Room.Name_Room)
         </dt>
@@ -37,19 +44,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TimeStart)
+            @Html.DisplayNameFor(model => model.TimeOfTraining)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TimeStart)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TimeStop)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TimeStop)
+            @Html.DisplayFor(model => model.TimeOfTraining)
         </dd>
 
     </dl>
@@ -58,8 +57,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Удалить" class="btn btn-default" /> |
+            @Html.ActionLink("Назад к списку", "Index")
         </div>
     }
 </div>

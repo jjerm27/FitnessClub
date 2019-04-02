@@ -5,13 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Все тренировки</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Создать", "Create")
 </p>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.dateOfTraining)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Room.Name_Room)
         </th>
@@ -23,11 +26,19 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.TimeOfTraining)
-        </th>               
+        </th>
+
+        <th>
+            Количество записанных людей
+        </th>
+
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateOfTraining)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Room.Name_Room)
         </td>
@@ -39,11 +50,15 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TimeOfTraining)
-        </td>       
+        </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdTraining }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdTraining }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdTraining })
+            @Html.DisplayFor(modelItem => item.TrainingUsers.Count)
+        </td>
+
+        <td>
+            @Html.ActionLink("Редактировать", "Edit", new { id = item.IdTraining }) |
+            @Html.ActionLink("Детально", "Details", new { id = item.IdTraining }) |
+            @Html.ActionLink("Удалить", "Delete", new { id = item.IdTraining })
         </td>
     </tr>
 }

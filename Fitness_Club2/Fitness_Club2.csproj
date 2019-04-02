@@ -205,6 +205,18 @@
     <Compile Include="Migrations\201903252030289_changeTraining.Designer.cs">
       <DependentUpon>201903252030289_changeTraining.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903291647443_addDateTraining.cs" />
+    <Compile Include="Migrations\201903291647443_addDateTraining.Designer.cs">
+      <DependentUpon>201903291647443_addDateTraining.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903291715576_addDateTraining2.cs" />
+    <Compile Include="Migrations\201903291715576_addDateTraining2.Designer.cs">
+      <DependentUpon>201903291715576_addDateTraining2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903291953362_changeTrainingUser1.cs" />
+    <Compile Include="Migrations\201903291953362_changeTrainingUser1.Designer.cs">
+      <DependentUpon>201903291953362_changeTrainingUser1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Filial.cs" />
@@ -284,6 +296,8 @@
     <Content Include="Views\Trainings\Details.cshtml" />
     <Content Include="Views\Trainings\Edit.cshtml" />
     <Content Include="Views\Trainings\Index.cshtml" />
+    <Content Include="Views\Trainings\AlreadyExist.cshtml" />
+    <Content Include="Views\Home\Manager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -320,6 +334,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903252030289_changeTraining.resx">
       <DependentUpon>201903252030289_changeTraining.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903291647443_addDateTraining.resx">
+      <DependentUpon>201903291647443_addDateTraining.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903291715576_addDateTraining2.resx">
+      <DependentUpon>201903291715576_addDateTraining2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903291953362_changeTrainingUser1.resx">
+      <DependentUpon>201903291953362_changeTrainingUser1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

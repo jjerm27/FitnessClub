@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Fitness_Club2.Controllers
 {
+    [Authorize(Roles ="admin")]
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -128,17 +129,24 @@ namespace Fitness_Club2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Sex,Specialize,Status,WorkingTimeId,Filial_Id,IsActive,BirthDay,Adress,Photo,Date_Of_Create,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser, string Role)
         {
-            userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
-            roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-            var addRole = roleManager.FindById(Role);
-
+            
             if (ModelState.IsValid)
             {
-                db.Users.Add(applicationUser);               
-                db.SaveChanges();
-                userManager.AddToRole(applicationUser.Id, addRole.Name);
-                userManager.AddToRole(applicationUser.Id, "dont_change");
-                userManager.AddToRole(applicationUser.Id, "user");
+                userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
+                roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                var addRole = roleManager.FindById(Role);
+                string password = "Qwerty";                
+                var result = userManager.Create(applicationUser, password);
+                if (result.Succeeded)
+                {
+                    userManager.AddToRole(applicationUser.Id, addRole.Name);
+                    userManager.AddToRole(applicationUser.Id, "dont_change");
+                    userManager.AddToRole(applicationUser.Id, "user");
+                }
+
+                //    db.Users.Add(applicationUser);               
+                //db.SaveChanges();
+               
                 return RedirectToAction("Index");
             }
 
