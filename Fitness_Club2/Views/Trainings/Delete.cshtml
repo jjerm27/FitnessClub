@@ -17,7 +17,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.dateOfTraining)
+            @Model.dateOfTraining.ToShortDateString()
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Room.Name_Room)
@@ -33,15 +33,7 @@
 
         <dd>
             @Html.DisplayFor(model => model.Trainer.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Training_Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Training_Name)
-        </dd>
+        </dd>       
 
         <dt>
             @Html.DisplayNameFor(model => model.TimeOfTraining)

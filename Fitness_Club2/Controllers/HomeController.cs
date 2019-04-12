@@ -1,27 +1,24 @@
-﻿using Fitness_Club2.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Fitness_Club2.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Fitness_Club2.Controllers
-{
-    [AllowAnonymous]   
+{   
     public class HomeController : Controller
     {
-        ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
-
+        [AllowAnonymous]
         public ActionResult Index()
-        {
-            ApplicationUserManager userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
-
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-
-
+        {            
             #region
             {
 
@@ -108,37 +105,88 @@ namespace Fitness_Club2.Controllers
                 //}
             }
             #endregion
-
-            var currentUser = User.Identity.GetUserId();
-            if(currentUser!=null)
-                if (userManager.IsInRole(currentUser, "manager"))
-                    return RedirectToAction("Manager");
-
-
+            
             return View();
         }
 
-        [Authorize(Roles ="manager")]
+        [Authorize(Roles = "manager,user,trainer,admin")]
+        public ActionResult Cabinet()
+        {
+            ApplicationUserManager userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
+
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+
+            var currentUser = User.Identity.GetUserId();
+            if (currentUser != null)
+            {
+                if (userManager.IsInRole(currentUser, "manager"))
+                    return RedirectToAction("Manager");
+                if (userManager.IsInRole(currentUser, "trainer"))
+                    return RedirectToAction("Trainer");
+                if (userManager.IsInRole(currentUser, "user"))
+                    return RedirectToAction("UserTrainings");
+            }
+            return View();
+        }
+
+        [Authorize(Roles ="manager, admin")]
         public ActionResult Manager()
         {
-            var dateOfTraining = DateTime.Now.ToShortDateString();
+            var periodTo1= new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var periodFrom1 = DateTime.Now.AddDays(-5);
+
+            var periodTo2 =  DateTime.Now.AddDays(5);
+            var periodFrom2 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+            var dateOfTraining = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);           
+
             var todayTrainings = db.Training.Where(t => t.dateOfTraining == dateOfTraining).ToList();
 
+            var fiveDaysTrainings = db.Training.Where(t => t.dateOfTraining > periodFrom1 && t.dateOfTraining < periodTo1).ToList();
+            ViewBag.FiveDayTrainings = fiveDaysTrainings;
+
+            var futureFiveDaysTrainings = db.Training.Where(t => t.dateOfTraining > periodFrom2 && t.dateOfTraining < periodTo2).ToList();
+            ViewBag.futureFiveDaysTrainings = futureFiveDaysTrainings;
+           
             return View(todayTrainings);
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
+        [Authorize(Roles = "user, admin")]
+        public ActionResult UserTrainings()
+        {            
+            var currentUser = User.Identity.GetUserId();
 
-            return View();
+            var allTrainings = db.Training.Where(t => t.TrainingUsers
+                                                .Where(tu => tu.UserId == currentUser)
+                                                .Select(s => s.IdTraining)
+                                                .FirstOrDefault() == t.IdTraining).ToList();
+                    
+            return View(allTrainings);
         }
 
-        public ActionResult Contact()
+        [Authorize(Roles = "trainer, admin")]
+        public ActionResult Trainer()
         {
-            ViewBag.Message = "Your contact page.";
+            var currentUser = User.Identity.GetUserId();
 
-            return View();
-        }
+            var periodTo1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var periodFrom1 = DateTime.Now.AddDays(-5);
+
+            var periodTo2 = DateTime.Now.AddDays(5);
+            var periodFrom2 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+            var dateOfTraining = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+            var todayTrainings = db.Training.Where(t => t.dateOfTraining == dateOfTraining && t.TrainerId==currentUser).ToList();
+
+            var fiveDaysTrainings = db.Training.Where(t => t.dateOfTraining > periodFrom1 && t.dateOfTraining < periodTo1 && t.TrainerId == currentUser).ToList();
+            ViewBag.FiveDayTrainings = fiveDaysTrainings;
+
+            var futureFiveDaysTrainings = db.Training.Where(t => t.dateOfTraining > periodFrom2 && t.dateOfTraining < periodTo2 && t.TrainerId == currentUser).ToList();
+            ViewBag.futureFiveDaysTrainings = futureFiveDaysTrainings;
+
+
+            return View("Manager", todayTrainings);
+        }        
     }
 }

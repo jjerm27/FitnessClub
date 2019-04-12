@@ -1,36 +1,92 @@
 ﻿@model IEnumerable<Fitness_Club2.Models.Training>
+@using Fitness_Club2.Models
 
 @{
     ViewBag.Title = "Manager";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Тренировки сегодня</h2><br />
+<h3>Тренировки сегодня</h3><br />
 
 <div class="container-fluid">
     <div class="row">
 
-        @foreach (var item in Model)
+        @foreach (Training item in Model)
         {
             <div class="col-md-4">
                 <div class="breadcrumb">
-                    <b>@Html.DisplayNameFor(model => model.dateOfTraining)</b><span> - </span>@Html.DisplayFor(modelItem => item.dateOfTraining)
-                    <br /><br />
-                    <b>@Html.DisplayNameFor(model => model.Room.Name_Room)</b> <span> - </span> @Html.DisplayFor(modelItem => item.Room.Name_Room)
-                    <br /><br />
-                    <b>@Html.DisplayNameFor(model => model.Trainer.Name)</b> <span> - </span> @Html.DisplayFor(modelItem => item.Trainer.Name)
-                    <br /><br />
-                    <b>@Html.DisplayNameFor(model => model.Training_Name)</b><span> - </span>@Html.DisplayFor(modelItem => item.Training_Name)
-                    <br /><br />
-                    <b>@Html.DisplayNameFor(model => model.TimeOfTraining)</b><span> - </span>@Html.DisplayFor(modelItem => item.TimeOfTraining)
-                    <br /><br />
-                    <b>Количество записанных</b><span> - </span>@Html.DisplayFor(modelItem => item.TrainingUsers.Count)
-
+                    <dl>
+                        <dd><b>@Html.DisplayNameFor(model => model.dateOfTraining)</b><span> - </span>@item.dateOfTraining.ToShortDateString()</dd>
+                        <dd> <b>@Html.DisplayNameFor(model => model.Room.Name_Room)</b> <span> - </span>@Html.DisplayFor(modelItem => item.Room.Name_Room)</dd>
+                        <dd><b>@Html.DisplayNameFor(model => model.Trainer.Name)</b> <span> - </span>@Html.DisplayFor(modelItem => item.Trainer.Name)</dd>
+                        <dd><b>@Html.DisplayNameFor(model => model.TimeOfTraining)</b><span> - </span>@Html.DisplayFor(modelItem => item.TimeOfTraining)</dd>
+                        <dd><b>Количество записанных</b><span> - </span>@Html.DisplayFor(modelItem => item.TrainingUsers.Count)</dd>
+                    </dl>                                       
                 </div>
             </div>
-         }            
-    </div>    
+        }
+    </div>
 </div>
 
+<h3>Тренировки на пять дней</h3><br />
+
+<div class="container-fluid">
+    <div class="row">
+        @if (ViewBag.futureFiveDaysTrainings.Count == 0)
+        {
+            <div class="col-md-4">
+                <p>Тренировок не найдено</p>
+            </div>
+        }
+        else
+        {
+            foreach (Training item in ViewBag.futureFiveDaysTrainings)
+            {
+                <div class="col-md-4">
+                    <div class="breadcrumb">
+                        <dl>
+                            <dd><b>@Html.DisplayNameFor(model => model.dateOfTraining)</b><span> - </span>@item.dateOfTraining.ToShortDateString()</dd>
+                            <dd> <b>@Html.DisplayNameFor(model => model.Room.Name_Room)</b> <span> - </span>@Html.DisplayFor(modelItem => item.Room.Name_Room)</dd>
+                            <dd><b>@Html.DisplayNameFor(model => model.Trainer.Name)</b> <span> - </span>@Html.DisplayFor(modelItem => item.Trainer.Name)</dd>
+                            <dd><b>@Html.DisplayNameFor(model => model.TimeOfTraining)</b><span> - </span>@Html.DisplayFor(modelItem => item.TimeOfTraining)</dd>
+                            <dd><b>Количество записанных</b><span> - </span>@Html.DisplayFor(modelItem => item.TrainingUsers.Count)</dd>
+                        </dl>                        
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+<h3>Тренировки за последние пять дней</h3><br />
+
+<div class="container-fluid">
+    <div class="row">
+        @if (ViewBag.FiveDayTrainings.Count == 0)
+        {
+            <div class="col-md-4">
+                <p>Тренировок за предыдущие дни не найдено</p>
+            </div>
+        }
+        else
+        {
+            foreach (Training item in ViewBag.FiveDayTrainings)
+            {
+                <div class="col-md-4">
+                    <div class="breadcrumb">
+                        <dl>
+                            <dd><b>@Html.DisplayNameFor(model => model.dateOfTraining)</b><span> - </span>@item.dateOfTraining.ToShortDateString()</dd>
+                            <dd> <b>@Html.DisplayNameFor(model => model.Room.Name_Room)</b> <span> - </span>@Html.DisplayFor(modelItem => item.Room.Name_Room)</dd>
+                            <dd><b>@Html.DisplayNameFor(model => model.Trainer.Name)</b> <span> - </span>@Html.DisplayFor(modelItem => item.Trainer.Name)</dd>
+                            <dd><b>@Html.DisplayNameFor(model => model.TimeOfTraining)</b><span> - </span>@Html.DisplayFor(modelItem => item.TimeOfTraining)</dd>
+                            <dd><b>Количество записанных</b><span> - </span>@Html.DisplayFor(modelItem => item.TrainingUsers.Count)</dd>
+                        </dl>                      
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
 
 

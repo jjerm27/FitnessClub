@@ -217,6 +217,18 @@
     <Compile Include="Migrations\201903291953362_changeTrainingUser1.Designer.cs">
       <DependentUpon>201903291953362_changeTrainingUser1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904051808553_deleteNameTraining.cs" />
+    <Compile Include="Migrations\201904051808553_deleteNameTraining.Designer.cs">
+      <DependentUpon>201904051808553_deleteNameTraining.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904102009163_addDateToTraining.cs" />
+    <Compile Include="Migrations\201904102009163_addDateToTraining.Designer.cs">
+      <DependentUpon>201904102009163_addDateToTraining.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904111046234_swapDateOnTraining.cs" />
+    <Compile Include="Migrations\201904111046234_swapDateOnTraining.Designer.cs">
+      <DependentUpon>201904111046234_swapDateOnTraining.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Filial.cs" />
@@ -235,12 +247,15 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\darkly.bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\_bootswatch.scss" />
+    <Content Include="Content\_variables.scss" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -298,6 +313,7 @@
     <Content Include="Views\Trainings\Index.cshtml" />
     <Content Include="Views\Trainings\AlreadyExist.cshtml" />
     <Content Include="Views\Home\Manager.cshtml" />
+    <Content Include="Views\Home\UserTrainings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -343,6 +359,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903291953362_changeTrainingUser1.resx">
       <DependentUpon>201903291953362_changeTrainingUser1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904051808553_deleteNameTraining.resx">
+      <DependentUpon>201904051808553_deleteNameTraining.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904102009163_addDateToTraining.resx">
+      <DependentUpon>201904102009163_addDateToTraining.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904111046234_swapDateOnTraining.resx">
+      <DependentUpon>201904111046234_swapDateOnTraining.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

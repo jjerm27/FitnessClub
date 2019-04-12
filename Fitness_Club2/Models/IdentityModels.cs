@@ -53,11 +53,8 @@ namespace Fitness_Club2.Models
         [Display(Name = "Дата добавления")]
         [DataType(DataType.Date)]
         public System.DateTime Date_Of_Create { get; set; }
-
-        
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+       
         public virtual ICollection<Training> Training { get; set; }
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TrainingUsers> TrainingUsers { get; set; }
 
     }

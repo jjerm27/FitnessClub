@@ -23,8 +23,11 @@ namespace Fitness_Club2
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/darkly.bootstrap.min.css",
+                      //"~/Content/site.css",
+                      "~/Content/_variables.scss",
+                      "~/Content/_bootswatch.scss"
+                      ));
         }
     }
 }

@@ -16,10 +16,7 @@ namespace Fitness_Club2.Models
         [Key]
         [ScaffoldColumn(false)]
         public int IdTraining { get; set; }
-
-        [Display(Name = "Название тренировки")]
-        public string Training_Name { get; set; }
-
+       
         [Required]
         public string TrainerId { get; set; }
         public virtual ApplicationUser Trainer { get; set; }
@@ -31,12 +28,11 @@ namespace Fitness_Club2.Models
         [Required]
         [Display(Name = "Время тренировки")]
         public string TimeOfTraining { get; set; }
-
+        
         [Required]
         [Display(Name = "Дата тренировки")]
-        public string dateOfTraining { get; set; }
-                 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public DateTime dateOfTraining { get; set; }
+                       
         public virtual ICollection<TrainingUsers> TrainingUsers { get; set; }
     }
 }

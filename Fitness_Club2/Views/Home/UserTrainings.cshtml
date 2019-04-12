@@ -1,41 +1,36 @@
 ﻿@model IEnumerable<Fitness_Club2.Models.Training>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Ваши тренировки";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Все тренировки</h2>
+<h2>Ваши тренировки</h2>
 
 <p>
-    @Html.ActionLink("Создать", "Create")
+    @Html.ActionLink("Записаться", "Create", "Trainings")
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.dateOfTraining)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Room.Name_Room)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Trainer.Name)
-        </th>        
+        </th>       
         <th>
             @Html.DisplayNameFor(model => model.TimeOfTraining)
         </th>
-
         <th>
-            Количество записанных людей
+            @Html.DisplayNameFor(model => model.dateOfTraining)
         </th>
-
+        <th>
+            Людей записалось
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @item.dateOfTraining.ToShortDateString()
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Room.Name_Room)
         </td>
@@ -46,13 +41,13 @@
             @Html.DisplayFor(modelItem => item.TimeOfTraining)
         </td>
         <td>
+            @item.dateOfTraining.ToShortDateString()
+        </td>  
+        <td>
             @Html.DisplayFor(modelItem => item.TrainingUsers.Count)
         </td>
-
         <td>
-            @Html.ActionLink("Редактировать", "Edit", new { id = item.IdTraining }) |
-            @Html.ActionLink("Детально", "Details", new { id = item.IdTraining }) |
-            @Html.ActionLink("Удалить", "Delete", new { id = item.IdTraining })
+            <a href="/Trainings/Delete/?id=@item.IdTraining">Удалить</a>                      
         </td>
     </tr>
 }

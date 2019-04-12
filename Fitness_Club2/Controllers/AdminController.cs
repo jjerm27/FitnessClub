@@ -174,6 +174,7 @@ namespace Fitness_Club2.Controllers
             {
                 return HttpNotFound();
             }
+           
             else
             {
                 var RoleNames = (from userRole in applicationUser.Roles
